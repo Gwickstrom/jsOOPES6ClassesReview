@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>JS ES6 Classes</title>
+    </head>
+    <body>
+        <script>
+            // 1. You use a FUNCTION as a CONSTRUCTOR, and;
+            // 2. You use a PROTOTYPE for DEFINING INSTANCE METHODS, and;
+            // 3. The PROTOTYPE is used strictly for DEFINING THE INSTANCE METHODS and nothing else;
+
+            // Then:
+            //
+            // \/\/\/ You will have something that works just like a simple class-based system, with the constructor function and its prototype acting as the “class.” \/\/\/
+
+
+
+
+            // A class is an entity responsible for creating objects and defining the behaviour of objects.
+            // Classes may be objects in their own right, but if they are, they’re different from other types of objects.
+            // All objects in a “classical” system have a class, and their class is a “class.”
+
+            // JavaScript objects don’t have a formal class, and thus there’s no special syntax for defining how to create an instance or define its behaviour.
+
+            // JavaScript instances are created with a constructor. The constructor of an instance is a function that was invoked with the new operator.
+
+            // In JavaScript, any function can be a constructor, even if it doesn’t look like one:
+
+            // EXAMPLE OF JS FUNCTION SHORTHAND
+
+
+            // Arrow functions do not have their own arguments object. Thus, in this example, arguments is simply a reference to the arguments of the enclosing scope:
+            // ===================JS Arrow functions============================
+            var arguments = [1, 2, 3];
+            var arr = () => arguments[0];
+
+            console.log("arr: " + arr()); // 1
+
+
+            const wrap = (something) => {
+              const wrapped = [something];
+
+              return wrapped;
+            }
+            //=================== End JS arrow functions========================
+            wrap("package")
+              //=> ["package"]
+            console.log(wrap("package"))
+
+            function square (n) { return n * n; }
+              //=> undefined
+            console.log(square(2));
+              //=> 4
+            console.log("\n");
+            console.log(square(2).constructor);
+              //=> [Function: Number]
+            console.log("\n");
+            console.log(new square(2));
+              //=> {}
+            console.log("\n");
+            console.log(new square(2).constructor);
+            console.log("\n");
+              //=> [Function: square]
+            // As you can see, the square function will act as a constructor if you call it with new. There is no special kind of thing that constructs new objects, every function is (potentially) a constructor.
+
+
+            // How does JavaScript define the behaviour of instances? JavaScript doesn’t have a special syntax or special kind of object for that, it has “prototypes.” Prototypes are objects, but unlike a classical system, there are no special methods or properties associated with a prototype. Any object can be a prototype, even an empty object. In fact, that’s exactly what is associated with a constructor by default:
+
+            function Nullo () {};
+            Nullo.prototype
+              //=> {}
+
+            // There’s absolutely nothing special about a prototype object. No special class methods, no special constructor of its own, nothing. Let’s look at a simple Queue in JavaScript:
+
+            var Queue = function () {
+              this.array = [];
+              this.head = 0;
+              this.tail = -1;
+            };
+            Queue.prototype.pushTail = function (value) {
+              return this.array[this.tail += 1] = value;
+            };
+            Queue.prototype.pullHead = function () {
+              var value;
+
+              if (!this.isEmpty()) {
+                  // isEmpty() : boolean
+                  // boolean	True if the string is empty; otherwise false.
+                value = this.array[this.head];
+                this.array[this.head] = void 0;
+                // This operator allows evaluating expressions that produce a value into places where an expression that evaluates to undefined is desired.
+                //
+                // The void operator is often used merely to obtain the undefined primitive value, usually using "void(0)" (which is equivalent to "void 0").
+                this.head += 1;
+                return value;
+              }
+            };
+            Queue.prototype.isEmpty = function () {
+              return this.tail < this.head;
+            };
+            console.log("\n");
+            console.log(Queue.prototype);
+              //=>  { pushTail: [Function],
+                      // pullHead: [Function],
+                      // isEmpty: [Function] }
+
+
+
+            // The first way a prototype in JavaScript is different from a class in Ruby is that the prototype is an ordinary object with exactly the same properties that we expect to find in an instance: Methods pushTail, pullHead, and isEmpty.
+
+            // The second way is that any object can be a prototype. It can have functions (which act like methods), it can have other values (like numbers, booleans, objects, or strings). It can be an object you’re using for something else: An account, a view, a DOM object if you’re in the browser, anything.
+
+            // “Classes” are objects in most “classical” languages, but they are a special kind of object. In JavaScript, prototypes are not a special kind of object, they’re just objects.
+
+            // JavaScript splits the responsibility for instances into a constructor and a prototype. A constructor in JavaScript can be any function. Constructors are responsible for creating new instances.
+
+            // A prototype in JavaScript can be any object. Prototypes are responsible for defining the behaviour of instances. prototypes don’t have special methods or properties.
+
+
+            // Instance behaviour in JavaScript is defined by modifying the prototype directly, e.g. by adding functions to it as properties. There is no special syntax for defining a class or modifying a class.
+
+            // Because, if:
+
+            // 1. You use a function as a constructor, and;
+            // 2. You use a prototype for defining instance methods, and;
+            // 3. The prototype is used strictly for defining the instance methods and nothing else;
+
+            // Then:
+            //
+            // \/\/\/ You will have something that works just like a simple class-based system, with the constructor function and its prototype acting as the “class.” \/\/\/
+
+            console.log("\n");
+
+            // With the introduction of ES6, JavaScript developers now have access to the Class keyword. However, don't be fooled: ES6's Classes are just syntactic wrappers around the Object Constructors we've already learned.
+            // Under the hood, Classes and Object Constructors largely behave the same way. The benefit we get is easier syntax to read and write.
+            // Class and constructor
+            // Let's define a simple class: Dot. Dots have an x value and a y value. Consider the below definition:
+
+            // class Dot {
+            //     constructor(x, y){
+            //         this.x = x;
+            //         this.y = y;
+            //     }
+            // }
+            // We're defining our class using the class keyword. In addition, we're defining a method called constructor. All ES6 classes have a constructor, and the constructor always runs whenever we create a new instance. Try running this next example:
+            class Dot {
+                constructor(x,y){
+                    this.x = x;
+                    this.y = y;
+                    console.log("You created a Dot");
+                }
+            }
+            let dot1 = new Dot(10,10);
+
+            // That console log fired when we invoked the new keyword. Also take note: Classes are NOT hoisted. No matter what, the class keyword will stay where it was written and not move during interpretation.
+
+            // Old ES5 way
+            function Dot2(x, y) {
+                this.x = x;
+                this.y = y;
+            }
+            Dot2.prototype.showLocation = function() {
+                console.log("This Dot is at x " + this.x + " and y " + this.y);
+            }
+            const dot2 = new Dot2(55, 20);
+            dot2.showLocation();
+
+            // THE NEW ES6 way
+            class Dot3 {
+                constructor(x, y){
+                    this.x = x;
+                    this.y = y;
+                }
+                showLocation(){
+                    //ES6 String Interpolation!
+                    console.log(`This Dot is at x ${this.x} and y ${this.y}`);
+                }
+            }
+            const dot3 = new Dot3(5,13);
+            dot3.showLocation();
+
+            //  The two above examples are doing the exact same thing. The key difference is syntax.
+            // Also take note, adding methods to ES6 classes is the same as adding prototype methods to object constructors.
+            // These get added to the prototype chain in the same way.
+
+
+
+            //=============CLASS METHODS VS INSTANCE METHODS==================
+
+
+            // In ES6, Class methods are called 'static methods`,
+
+             // while Instance methods are called 'prototype methods'.
+
+             // We've already seen prototype methods, now let's look at a static method. Let's say we want to add a new function to the class Dot, not an instance of a Dot:
+
+             class Dot4 {
+                 constructor(x,y){
+                     this.x = x;
+                     this.y = y;
+                 }
+                // prototype method
+                showLocation(){
+                    console.log(`This Dot is at x ${this.x} and y ${this.y}`);
+                }
+                // Static method
+                static getHelp(){
+                    console.log("This is a Dot class, for created Dots! A Dot takes x and y coordinates, type 'new Dot' to create one");
+                }
+             }
+
+             const dot4 = new Dot4(4,2);
+             // we can see showLocation from our instance...
+             console.log(dot4.showLocation);
+             // but we can't see getHelp
+             console.log(dot4.getHelp);
+             // however we can call getHelp this way:
+             Dot4.getHelp();
+             // Here we added a static method called getHelp(). This means that getHelp() is accessible from the Class, not the instance.
+        </script>
+    </body>
+</html>
